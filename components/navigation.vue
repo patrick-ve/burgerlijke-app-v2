@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="w-screen border-t-[1px] h-16 bg-white fixed bottom-0 left-0 text-gray-600 dark:text-gray-300"
+    class="w-screen border-t-[1px] h-16 bg-white fixed bottom-0 left-0"
   >
     <ul class="flex justify-evenly items-center h-full">
       <li
@@ -33,7 +33,7 @@ const navigationLinks = [
     icon: 'i-heroicons-book-open',
   },
   {
-    name: 'Shopping list',
+    name: 'Shopping',
     path: '/my-shopping-list',
     icon: 'i-heroicons-shopping-cart',
   },
