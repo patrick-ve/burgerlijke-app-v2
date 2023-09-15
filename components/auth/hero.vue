@@ -1,5 +1,5 @@
 <template>
-  <UContainer class="mb-8 mt-20 text-center">
+  <UContainer class="mb-8 mt-12 text-center">
     <h1
       class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
     >
