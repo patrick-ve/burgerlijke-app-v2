@@ -89,6 +89,7 @@ async function loginHandler(event: FormSubmitEvent<any>) {
 
     toast.add({
       title: 'Je bent succesvol ingelogd.',
+      timeout: 2500,
     });
 
     navigateTo('/');
