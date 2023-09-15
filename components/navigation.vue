@@ -28,12 +28,12 @@ const navigationLinks = [
     icon: 'i-heroicons-home',
   },
   {
-    name: 'Recipes',
+    name: 'Recepten',
     path: '/my-recipes',
     icon: 'i-heroicons-book-open',
   },
   {
-    name: 'Shopping',
+    name: 'Boodschappen',
     path: '/my-shopping-list',
     icon: 'i-heroicons-shopping-cart',
   },
@@ -43,7 +43,7 @@ const navigationLinks = [
     icon: 'i-heroicons-list-bullet',
   },
   {
-    name: 'Profile',
+    name: 'Profiel',
     path: '/my-profile',
     icon: 'i-heroicons-user-circle',
   },
