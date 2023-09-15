@@ -1,6 +1,11 @@
 <template>
   <UContainer class="p-4">
-    <UForm :validate="validate" :state="state" @submit="submit">
+    <UForm
+      :validate="validate"
+      :state="state"
+      :schema="schema"
+      @submit="submit"
+    >
       <UFormGroup label="Email" name="email" class="mb-3">
         <UInput v-model="state.email" />
       </UFormGroup>
@@ -29,11 +34,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { z } from 'zod';
 import type {
   FormError,
   FormSubmitEvent,
 } from '@nuxt/ui/dist/runtime/types';
+
+const schema = z.object({
+  email: z
+    .string()
+    .regex(
+      /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/,
+      'Ongeldig e-mailadres'
+    ),
+  password: z
+    .string()
+    .regex(
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+      'Wachtwoord moet voldoen aan de volgende eisen: 8 karakters lang, 1 cijfer, 1 hoofdletter'
+    ),
+  repeatPassword: z
+    .string()
+    .regex(
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+      'Wachtwoord moet voldoen aan de volgende eisen: 8 karakters lang, 1 cijfer, 1 hoofdletter'
+    ),
+});
 
 const state = ref({
   email: undefined,
@@ -48,6 +74,12 @@ const validate = (state: any): FormError[] => {
   if (!state.password)
     errors.push({
       path: 'password',
+      message:
+        'Wachtwoord moet tenminste 8 karakters lang zijn, 1 cijfer, 1 hoofdletter',
+    });
+  if (!state.repeatPassword)
+    errors.push({
+      path: 'repeatPassword',
       message:
         'Wachtwoord moet tenminste 8 karakters lang zijn, 1 cijfer, 1 hoofdletter',
     });

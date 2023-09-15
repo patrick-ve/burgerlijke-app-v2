@@ -1,6 +1,11 @@
 <template>
   <UContainer class="p-4">
-    <UForm :validate="validate" :state="state" @submit="submit">
+    <UForm
+      :validate="validate"
+      :state="state"
+      :schema="schema"
+      @submit="submit"
+    >
       <UFormGroup label="Email" name="email" class="mb-3">
         <UInput v-model="state.email" />
       </UFormGroup>
@@ -16,20 +21,36 @@
         label="Log in met je burgerlijk account"
         class="w-full justify-center mt-3"
         :trailing="false"
+        :disabled="formContainsErrors"
       />
     </UForm>
   </UContainer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-const client = useSupabaseClient();
-const user = useSupabaseUser();
-
+import { z } from 'zod';
 import type {
   FormError,
   FormSubmitEvent,
 } from '@nuxt/ui/dist/runtime/types';
+
+// const client = useSupabaseClient();
+// const user = useSupabaseUser();
+
+const schema = z.object({
+  email: z
+    .string()
+    .regex(
+      /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/,
+      'Ongeldig e-mailadres'
+    ),
+  password: z
+    .string()
+    .regex(
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
+      'Wachtwoord moet voldoen aan de volgende eisen: 8 karakters lang, 1 cijfer, 1 hoofdletter'
+    ),
+});
 
 const state = ref({
   email: undefined,
@@ -49,14 +70,18 @@ const validate = (state: any): FormError[] => {
   return errors;
 };
 
+const formContainsErrors = computed(() => {
+  return validate(state.value).length > 0;
+});
+
 async function submit(event: FormSubmitEvent<any>) {
   // Do something with data
   console.log(event.data);
 }
 
-watchEffect(() => {
-  if (user.value) {
-    return navigateTo('/');
-  }
-});
+// watchEffect(() => {
+//   if (user.value) {
+//     return navigateTo('/');
+//   }
+// });
 </script>
