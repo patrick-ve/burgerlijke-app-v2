@@ -4,7 +4,7 @@
       :validate="validate"
       :state="state"
       :schema="schema"
-      @submit="submit"
+      @submit="signUpHandler"
     >
       <UFormGroup label="Email" name="email" class="mb-3">
         <UInput v-model="state.email" />
@@ -91,8 +91,27 @@ const validate = (state: any): FormError[] => {
 
   return errors;
 };
-async function submit(event: FormSubmitEvent<any>) {
-  // Do something with data
+
+const supabase = useSupabaseClient();
+const toast = useToast();
+
+async function signUpHandler(event: FormSubmitEvent<any>) {
   console.log(event.data);
+  const { email, password } = event.data;
+
+  try {
+    let { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    toast.add({
+      title: `Er is een e-mail gestuurd naar ${email}. Bevestig je e-mailadres om vervolgens in te kunnen loggen.`,
+    });
+  } catch (error) {
+    toast.add({
+      title: `Er is een fout opgetreden: ${error.message}.`,
+    });
+    console.log(error);
+  }
 }
 </script>

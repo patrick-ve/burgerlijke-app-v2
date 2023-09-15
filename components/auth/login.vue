@@ -4,7 +4,7 @@
       :validate="validate"
       :state="state"
       :schema="schema"
-      @submit="submit"
+      @submit="loginHandler"
     >
       <UFormGroup label="Email" name="email" class="mb-3">
         <UInput v-model="state.email" />
@@ -74,9 +74,29 @@ const formContainsErrors = computed(() => {
   return validate(state.value).length > 0;
 });
 
-async function submit(event: FormSubmitEvent<any>) {
-  // Do something with data
+const supabase = useSupabaseClient();
+const toast = useToast();
+
+async function loginHandler(event: FormSubmitEvent<any>) {
   console.log(event.data);
+
+  const { email, password } = event.data;
+  try {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    toast.add({
+      title: 'Je bent succesvol ingelogd.',
+    });
+
+    navigateTo('/');
+  } catch (error) {
+    toast.add({
+      title: `Er is een fout opgetreden: ${error.message}.`,
+    });
+  }
 }
 
 // watchEffect(() => {
