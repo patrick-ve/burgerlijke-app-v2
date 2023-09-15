@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
-    // '@nuxtjs/supabase',
+    '@nuxtjs/supabase',
     '@nuxtjs/google-fonts',
     '@pinia/nuxt',
     '@vite-pwa/nuxt',
@@ -17,6 +17,10 @@ export default defineNuxtConfig({
     families: {
       'DM+Sans': [400, 500, 700],
     },
+  },
+
+  supabase: {
+    redirect: false,
   },
 
   runtimeConfig: {
