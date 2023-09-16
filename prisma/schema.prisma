@@ -47,6 +47,7 @@ model Recipe {
   cookingTime       Int
   ingredients       Ingredient[]
   preparationSteps  PreparationStep[]
+  userId            String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
