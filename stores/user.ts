@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 
+const user = useSupabaseUser();
+const userId = user.value!.id;
+
 export const useUserStore = defineStore('user', {
   state: () => ({
     recipes: [],
@@ -8,7 +11,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     async fetchRecipes() {
       try {
-        this.recipes = await $fetch(`/api/recipes`, {
+        this.recipes = await $fetch(`/api/recipe/${userId}`, {
           method: 'GET',
         });
       } catch (error) {
