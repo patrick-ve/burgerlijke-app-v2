@@ -26,8 +26,6 @@ export default defineEventHandler(async (event) => {
     },
   });
 
-  console.log(JSON.stringify(recipes, null, 2));
-
   if (!recipes) {
     throw createError({
       statusCode: 404,
