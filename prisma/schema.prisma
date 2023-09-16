@@ -44,7 +44,7 @@ model Recipe {
   youtubeUrl        String?
   kitchen           Kitchen   @default(ITALIAN)
   portions          Int
-  prepationTime     Int
+  cookingTime       Int
   ingredients       Ingredient[]
   preparationSteps  PreparationStep[]
   createdAt         DateTime  @default(now())
@@ -54,7 +54,7 @@ model Recipe {
 model Ingredient {
   id                Int      @id @default(autoincrement())
   name              String
-  amount            Int
+  amount            Int?
   unit              Amount   @default(GRAM)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
