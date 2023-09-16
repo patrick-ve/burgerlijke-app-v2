@@ -38,7 +38,7 @@ enum Amount {
 }
 
 model Recipe {
-  id                Int       @id @default(autoincrement())
+  id                String    @id @default(uuid())
   name              String
   description       String
   youtubeUrl        String?
@@ -52,22 +52,22 @@ model Recipe {
 }
 
 model Ingredient {
-  id                Int      @id @default(autoincrement())
+  id                String    @id @default(uuid())
   name              String
   amount            Int?
   unit              Amount   @default(GRAM)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   Recipe            Recipe   @relation(fields: [recipeId], references: [id])
-  recipeId          Int
+  recipeId          String
 }
 
 model PreparationStep {
-  id                Int      @id @default(autoincrement())
+  id                String    @id @default(uuid())
   description       String
   isCompleted       Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   Recipe            Recipe   @relation(fields: [recipeId], references: [id])
-  recipeId          Int
+  recipeId          String
 }
