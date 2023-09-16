@@ -6,10 +6,14 @@ export const useUserStore = defineStore('user', {
   }),
 
   actions: {
-    async getAllRecipes() {
-      let res = await useFetch('/api/recipes');
-      this.recipes = res.data as any;
-      return res.data;
+    async fetchRecipes() {
+      try {
+        this.recipes = await $fetch(`/api/recipes`, {
+          method: 'GET',
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 });
