@@ -16,8 +16,12 @@ export function mapIngredientAmount(
     OTHER: 'anders',
   };
 
-  if (amount === 1 || amount === 0 || amount === null) {
-    unitMap[unit].slice(0, -1);
+  if (
+    amount === 1 ||
+    amount === 0 ||
+    (amount === null && unit !== 'SOME')
+  ) {
+    return unitMap[unit].slice(0, -1);
   }
 
   return unitMap[unit] || unit;
