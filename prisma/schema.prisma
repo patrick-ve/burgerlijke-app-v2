@@ -37,6 +37,16 @@ enum Amount {
     OTHER
 }
 
+enum Day {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+}
+
 model Recipe {
   id                String    @id @default(uuid())
   name              String
@@ -47,6 +57,8 @@ model Recipe {
   cookingTime       Int
   ingredients       Ingredient[]
   preparationSteps  PreparationStep[]
+  weekday           WeekDay?  @relation(fields: [weekdayId], references: [id])
+  weekdayId         String?   @unique
   userId            String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -56,11 +68,13 @@ model Ingredient {
   id                String    @id @default(uuid())
   name              String
   amount            Int?
-  unit              Amount   @default(GRAM)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  Recipe            Recipe   @relation(fields: [recipeId], references: [id])
+  unit              Amount    @default(GRAM)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  Recipe            Recipe    @relation(fields: [recipeId], references: [id])
   recipeId          String
+  groceryList       GroceryList? @relation(fields: [groceryListId], references: [id])
+  groceryListId     String?
 }
 
 model PreparationStep {
@@ -71,4 +85,22 @@ model PreparationStep {
   updatedAt         DateTime @updatedAt
   Recipe            Recipe   @relation(fields: [recipeId], references: [id])
   recipeId          String
+}
+
+model WeekDay {
+  id                String    @id @default(uuid())
+  name              Day
+  date              DateTime
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  Recipe            Recipe?   @relation
+  recipeId          String?
+}
+
+model GroceryList {
+  id            String       @id @default(uuid())
+  userId        String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  ingredients   Ingredient[]
 }
