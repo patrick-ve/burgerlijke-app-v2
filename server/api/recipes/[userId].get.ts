@@ -1,9 +1,21 @@
 import { PrismaClient } from '@prisma/client';
+import {
+  serverSupabaseClient,
+  serverSupabaseUser,
+} from '#supabase/server';
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const { userId } = await getRouterParams(event);
+  const user = await serverSupabaseUser(event);
+  console.log('user', user);
+  const { id: userId } = user!;
+  // const { userId } = await getRouterParams(event);
+
+  console.log('userId', userId);
+  const client = await serverSupabaseClient(event);
+
+  client.storage.from('recipes').download('test.jpg');
 
   const recipes = await prisma.recipe.findMany({
     where: {

@@ -1,47 +1,62 @@
 import { PrismaClient } from '@prisma/client';
+import {
+  serverSupabaseClient,
+  serverSupabaseUser,
+} from '#supabase/server';
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+  const user = await serverSupabaseUser(event);
+  console.log('user', user);
   const { userId } = await getRouterParams(event);
 
-  // TODO: obtain actual values from the request body
-  const recipe = await prisma.recipe.create({
-    data: {
-      name: 'Pasta pesto',
-      description: 'A simple pasta pesto recipe',
-      cookingTime: 15,
-      youtubeUrl: null,
-      portions: 2,
-      kitchen: 'ITALIAN',
-      ingredients: {
-        create: [
-          {
-            name: 'Pasta',
-            amount: 200,
-            unit: 'GRAM',
-          },
-          {
-            name: 'Pesto',
-            amount: 100,
-            unit: 'GRAM',
-          },
-        ],
-      },
-      preparationSteps: {
-        create: [
-          {
-            description: 'Cook the pasta',
-            isCompleted: false,
-          },
-          {
-            description: 'Add the pesto',
-            isCompleted: false,
-          },
-        ],
-      },
+  console.log('userId', userId);
+  const client = await serverSupabaseClient(event);
 
-      userId,
-    },
-  });
+  client.storage.from('recipes').download('test.jpg');
+  // const { userId } = await getRouterParams(event);
+  const {
+    name,
+    description,
+    imageData,
+    youtubeUrl,
+    kitchen,
+    portions,
+    cookingTime,
+    ingredients,
+    preparationSteps,
+  } = await readBody(event);
+
+  let recipe;
+
+  try {
+    // TODO: handle image upload
+
+    recipe = await prisma.recipe.create({
+      data: {
+        name,
+        description,
+        cookingTime,
+        youtubeUrl: youtubeUrl ? youtubeUrl : null,
+        portions,
+        kitchen,
+        ingredients: {
+          create: ingredients,
+        },
+        preparationSteps: {
+          create: preparationSteps,
+        },
+        userId,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Internal server error',
+    });
+  }
+
+  return recipe;
 });
