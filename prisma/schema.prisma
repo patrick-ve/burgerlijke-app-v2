@@ -51,14 +51,13 @@ model Recipe {
   id                String    @id @default(uuid())
   name              String
   description       String
+  imageSrc          String?
   youtubeUrl        String?
   kitchen           Kitchen   @default(ITALIAN)
   portions          Int
   cookingTime       Int
   ingredients       Ingredient[]
   preparationSteps  PreparationStep[]
-  weekday           WeekDay?  @relation(fields: [weekdayId], references: [id])
-  weekdayId         String?   @unique
   userId            String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -73,8 +72,6 @@ model Ingredient {
   updatedAt         DateTime  @updatedAt
   Recipe            Recipe    @relation(fields: [recipeId], references: [id])
   recipeId          String
-  groceryList       GroceryList? @relation(fields: [groceryListId], references: [id])
-  groceryListId     String?
 }
 
 model PreparationStep {
@@ -93,14 +90,5 @@ model WeekDay {
   date              DateTime
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  Recipe            Recipe?   @relation
   recipeId          String?
-}
-
-model GroceryList {
-  id            String       @id @default(uuid())
-  userId        String
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  ingredients   Ingredient[]
 }
