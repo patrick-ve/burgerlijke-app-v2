@@ -33,6 +33,7 @@ const recipes: SeedingRecipe[] = [
     kitchen: 'ITALIAN',
     portions: 2,
     cookingTime: 30,
+    imageSrc: null,
     youtubeUrl: null,
     ingredients: {
       create: [
@@ -90,12 +91,13 @@ const recipes: SeedingRecipe[] = [
         },
       ],
     },
-    userId: '550e8400-e29b-41d4-a716-446655440000',
+    userId: 'a4f6b791-bade-4067-aa69-b61b6fbc7bb8',
   },
   {
     name: 'Lasagna Bolognese',
     description:
       'A delicious pasta dish from Bologna with just 4 ingredients.',
+    imageSrc: null,
     youtubeUrl: null,
     kitchen: 'ITALIAN',
     portions: 4,
@@ -144,11 +146,12 @@ const recipes: SeedingRecipe[] = [
         },
       ],
     },
-    userId: '550e8400-e29b-41d4-a716-446655440000',
+    userId: 'a4f6b791-bade-4067-aa69-b61b6fbc7bb8',
   },
   {
     name: 'Fajitas',
     description: 'Tasty and spicy fajitas with chicken.',
+    imageSrc: null,
     youtubeUrl: null,
     kitchen: 'MEXICAN',
     portions: 4,
@@ -220,7 +223,7 @@ const recipes: SeedingRecipe[] = [
         },
       ],
     },
-    userId: '550e8400-e29b-41d4-a716-446655440000',
+    userId: 'a4f6b791-bade-4067-aa69-b61b6fbc7bb8',
   },
 ];
 

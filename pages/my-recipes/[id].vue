@@ -46,10 +46,20 @@
             </li>
           </ul>
 
+          <UModal v-model="isModalOpen">
+            <UCard>
+              <template #header />
+              Body
+              <template #footer />
+            </UCard>
+          </UModal>
+
           <UButton
             v-if="item.key === 'ingredients'"
             block
-            label="Plan deze maaltijd in"
+            label="Voeg ingredienten toe aan boodschappenlijst"
+            icon="i-heroicons-shopping-cart"
+            @click="groceryListHandler"
           />
         </template>
       </UTabs>
@@ -61,6 +71,7 @@
 import { CompleteRecipe } from '@/types';
 import { mapIngredientAmount } from '@/utils/amountTransformer';
 
+const toast = useToast();
 const route = useRoute();
 const { id } = route.params;
 
@@ -80,6 +91,31 @@ const items = [
     item: recipe.value?.preparationSteps,
   },
 ];
+
+// TODO: Add modal one day
+const isModalOpen = ref(false);
+function modalHandler() {
+  isModalOpen.value = true;
+}
+
+async function groceryListHandler() {
+  if (!recipe.value) {
+    toast.add({
+      title:
+        'We konden de ingredienten niet toevoegen aan je boodschappenlijst.',
+      description: 'Probeer het later opnieuw.',
+    });
+
+    return;
+  }
+
+  await $fetch(`/api/grocery-list/`, {
+    method: 'POST',
+    body: JSON.stringify({
+      recipeId: recipe.value.id,
+    }),
+  });
+}
 
 onMounted(async () => {
   recipe.value = await $fetch(`/api/recipe/${id}`);
