@@ -19,7 +19,7 @@ export const recipeParser = StructuredOutputParser.fromZodSchema(
     kitchen: z
       .nativeEnum(Kitchen)
       .describe('Kitchen type for the recipe.'),
-    isVegeterian: z
+    isVegetarian: z
       .boolean()
       .describe('Whether the recipe is vegetarian or not.'),
     portions: z
