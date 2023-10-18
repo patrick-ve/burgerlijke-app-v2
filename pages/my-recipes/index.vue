@@ -1,7 +1,7 @@
 <template>
   <section class="pt-4">
     <UContainer>
-      <h1 class="font-semibold text-xl mb-4">My recipes</h1>
+      <h1 class="mb-4 text-xl font-semibold">My recipes</h1>
 
       <UIcon name="i-heroicons-arrow-down-right-20-solid" />
 
@@ -15,14 +15,24 @@
         </article>
       </nuxt-link>
 
-      <UModal v-model="isModalOpen">
+      <UModal
+        v-model="isModalOpen"
+        :ui="{ base: '-top-[20vh] left-0' }"
+      >
         <UCard>
           <template #header>
-            <h1 class="font-semibold text-xl">
-              Maak een nieuw recept aan
-            </h1>
+            <h1 class="text-xl font-semibold">Create a new recipe</h1>
           </template>
           <recipes-create-form />
+
+          <template #footer>
+            <UButton
+              size="lg"
+              square
+              label="Create recipe"
+              class="justify-center w-full"
+            />
+          </template>
         </UCard>
       </UModal>
 
