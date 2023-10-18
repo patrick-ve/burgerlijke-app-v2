@@ -3,7 +3,7 @@
     :state="recipe"
     class="space-y-2 p-1 overflow-y-scroll !h-[50vh] scrollbar-hide"
   >
-    <UTabs :items="tabItems">
+    <UTabs :items="tabItems" @change="$emit('change-tab', $event)">
       <template #item="{ item }">
         <div v-if="item.key === 'description'" class="space-y-2">
           <UFormGroup label="Title" name="title">
@@ -67,6 +67,10 @@
             />
           </UFormGroup>
         </div>
+
+        <div v-if="item.key === 'ingredients'">
+          <input-ingredient />
+        </div>
       </template>
     </UTabs>
   </UForm>
@@ -74,6 +78,7 @@
 
 <script setup lang="ts">
 import { Kitchen } from '@prisma/client';
+import { formatEnumValue, toEnumValue } from '@/utils/enums';
 
 const recipe = reactive({
   title: '',
@@ -91,16 +96,6 @@ const placeholders = {
 };
 
 const kitchens = Object.values(Kitchen);
-
-// Helper function to format enum values
-function formatEnumValue(value: string): string {
-  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-}
-
-// Helper function to convert formatted value back to enum
-function toEnumValue(value: string): string {
-  return value.toUpperCase();
-}
 
 // Use the helper function to format the enum values for display
 const kitchensFormatted = kitchens.map(formatEnumValue);
