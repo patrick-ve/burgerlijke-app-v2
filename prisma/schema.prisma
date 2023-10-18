@@ -23,7 +23,7 @@ enum Kitchen {
     OTHER
 }
 
-enum Amount {
+enum Unit {
     GRAM
     KILOGRAM
     LITER
@@ -54,6 +54,7 @@ model Recipe {
   imageSrc          String?
   youtubeUrl        String?
   kitchen           Kitchen   @default(ITALIAN)
+  isVegeterian      Boolean   @default(false)
   portions          Int
   cookingTime       Int
   ingredients       Ingredient[]
@@ -67,7 +68,7 @@ model Ingredient {
   id                String    @id @default(uuid())
   name              String
   amount            Int?
-  unit              Amount    @default(GRAM)
+  unit              Unit    @default(GRAM)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   Recipe            Recipe    @relation(fields: [recipeId], references: [id])
