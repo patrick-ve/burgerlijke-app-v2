@@ -1,4 +1,3 @@
-import { estimatePrice } from '~~/server/utils/ai/calculators/token';
 import { PrismaClient, Recipe } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -14,7 +13,7 @@ export default defineEventHandler(async (event) => {
 
   console.log(recipesString);
 
-  console.log(estimatePrice(recipesString));
+  //   console.log(estimatePrice(recipesString));
 
   return {
     recipes,

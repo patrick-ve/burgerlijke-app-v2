@@ -5,12 +5,23 @@ import {
   Response,
 } from 'langchain/document_loaders/web/playwright';
 import { OpenAI } from 'langchain/llms/openai';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { OutputFixingParser } from 'langchain/output_parsers';
 import { PromptTemplate } from 'langchain/prompts';
+import {
+  serverSupabaseClient,
+  serverSupabaseUser,
+} from '#supabase/server';
+import { PrismaClient } from '@prisma/client';
 import { recipeParser } from '~~/server/utils/ai/parsers/recipe';
 
+const prisma = new PrismaClient();
+
 export default defineEventHandler(async (event) => {
+  const client = await serverSupabaseClient(event);
   const { recipeUrl } = await readBody(event);
+
+  // const user = await serverSupabaseUser(event);
 
   const textLoader = new PlaywrightWebBaseLoader(recipeUrl, {
     launchOptions: {
@@ -81,10 +92,10 @@ export default defineEventHandler(async (event) => {
 
   const response = await model.call(input);
 
-  let output;
+  let recipe;
 
   try {
-    output = await recipeParser.parse(response);
+    recipe = await recipeParser.parse(response);
   } catch (e) {
     const fixParser = OutputFixingParser.fromLLM(
       new OpenAI({
@@ -95,10 +106,72 @@ export default defineEventHandler(async (event) => {
       recipeParser
     );
 
-    output = await fixParser.parse(response);
+    recipe = await fixParser.parse(response);
   }
 
-  console.log(output);
+  const {
+    name,
+    description,
+    youtubeUrl,
+    kitchen,
+    isVegetarian,
+    portions,
+    cookingTime,
+    ingredients,
+    instructions,
+  } = recipe;
+  const text = `
+    name: ${name}
+    description: ${description}
+    youtubeUrl: ${youtubeUrl}
+    kitchen: ${kitchen}
+    isVegetarian: ${isVegetarian}
+    portions: ${portions}
+    cookingTime: ${cookingTime}
+    instructions: ${instructions.map((instruction) =>
+      instruction.step.replace(/\.$/, '')
+    )}
+    ingredients: ${ingredients.map((ingredient) => ingredient.name)}
+    `;
 
-  // Create embedding
+  const embeddings = new OpenAIEmbeddings({
+    modelName: 'text-embedding-ada-002',
+    openAIApiKey: useRuntimeConfig().openAiKey,
+  });
+
+  const generatedEmbeddings = await embeddings.embedQuery(text);
+
+  // const userId = user!.id;
+  const userId = 'a4f6b791-bade-4067-aa69-b61b6fbc7bb8';
+
+  const savedRecipe = await prisma.recipe.create({
+    data: {
+      userId,
+      name,
+      description,
+      youtubeUrl,
+      kitchen,
+      isVegetarian,
+      portions,
+      cookingTime,
+      ingredients: {
+        create: ingredients.map((ingredient) => ({
+          name: ingredient.name,
+          amount: ingredient.amount,
+          unit: ingredient.unit,
+        })),
+      },
+      preparationSteps: {
+        create: instructions.map((instruction) => ({
+          description: instruction.step,
+        })),
+      },
+    },
+  });
+
+  const recipeId = savedRecipe.id;
+
+  await prisma.$queryRaw`UPDATE "Recipe" SET embedding = ${generatedEmbeddings} WHERE "id" = ${recipeId}`;
+
+  return recipe;
 });
