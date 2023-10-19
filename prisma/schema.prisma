@@ -56,13 +56,13 @@ model Recipe {
   imageSrc          String?
   youtubeUrl        String?
   kitchen           Kitchen   @default(ITALIAN)
-  isVegeterian      Boolean   @default(false)
+  isVegetarian      Boolean   @default(false)
   portions          Int
   cookingTime       Int
   ingredients       Ingredient[]
   preparationSteps  PreparationStep[]
   userId            String
-  embedding         Unsupported("vector(1536)")?
+  embedding         Unsupported("vector")?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
