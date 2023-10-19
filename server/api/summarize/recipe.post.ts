@@ -81,10 +81,10 @@ export default defineEventHandler(async (event) => {
 
   const response = await model.call(input);
 
-  try {
-    const output = await recipeParser.parse(response);
+  let output;
 
-    return output;
+  try {
+    output = await recipeParser.parse(response);
   } catch (e) {
     const fixParser = OutputFixingParser.fromLLM(
       new OpenAI({
@@ -95,7 +95,10 @@ export default defineEventHandler(async (event) => {
       recipeParser
     );
 
-    const output = await fixParser.parse(response);
-    return output;
+    output = await fixParser.parse(response);
   }
+
+  console.log(output);
+
+  // Create embedding
 });

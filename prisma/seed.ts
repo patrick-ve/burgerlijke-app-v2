@@ -31,6 +31,7 @@ const recipes: SeedingRecipe[] = [
     description:
       'A delicious pasta dish from Rome with just 4 ingredients.',
     kitchen: 'ITALIAN',
+    isVegeterian: false,
     portions: 2,
     cookingTime: 30,
     imageSrc: null,
@@ -100,6 +101,7 @@ const recipes: SeedingRecipe[] = [
     imageSrc: null,
     youtubeUrl: null,
     kitchen: 'ITALIAN',
+    isVegeterian: false,
     portions: 4,
     cookingTime: 60,
     ingredients: {
@@ -154,6 +156,7 @@ const recipes: SeedingRecipe[] = [
     imageSrc: null,
     youtubeUrl: null,
     kitchen: 'MEXICAN',
+    isVegeterian: false,
     portions: 4,
     cookingTime: 30,
     ingredients: {
