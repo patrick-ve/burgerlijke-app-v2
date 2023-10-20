@@ -1,98 +1,22 @@
-datasource db {
-  url      = env("DATABASE_URL")
-  provider = "postgresql"
-  extensions = [vector]
-}
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
 }
 
-enum Kitchen {
-    ITALIAN
-    MEXICAN
-    SPANISH
-    GREEK
-    JAPANESE
-    CHINESE
-    INDIAN
-    FRENCH
-    DUTCH
-    AMERICAN
-    VEGAN
-    VEGETARIAN
-    OTHER
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [uuid_ossp(map: "uuid-ossp", schema: "extensions"), vector]
 }
 
-enum Unit {
-    GRAM
-    KILOGRAM
-    LITER
-    MILLILITER
-    PIECE
-    TEASPOON
-    TABLESPOON
-    CUP
-    PINCH
-    SOME
-    OTHER
-}
-
-enum Day {
-    MONDAY
-    TUESDAY
-    WEDNESDAY
-    THURSDAY
-    FRIDAY
-    SATURDAY
-    SUNDAY
-}
-
-model Recipe {
-  id                String    @id @default(uuid())
-  name              String
-  description       String
-  imageSrc          String?
-  youtubeUrl        String?
-  kitchen           Kitchen   @default(ITALIAN)
-  isVegetarian      Boolean   @default(false)
-  portions          Int
-  cookingTime       Int
-  ingredients       Ingredient[]
-  preparationSteps  PreparationStep[]
-  userId            String
-  embedding         Unsupported("vector")?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-}
-
-model Ingredient {
-  id                String    @id @default(uuid())
-  name              String
-  amount            Int?
-  unit              Unit    @default(GRAM)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  Recipe            Recipe    @relation(fields: [recipeId], references: [id])
-  recipeId          String
-}
-
-model PreparationStep {
-  id                String    @id @default(uuid())
-  description       String
-  isCompleted       Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  Recipe            Recipe   @relation(fields: [recipeId], references: [id])
-  recipeId          String
-}
-
-model WeekDay {
-  id                String    @id @default(uuid())
-  name              Day
-  date              DateTime
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  recipeId          String?
+model recipes {
+  id           String                 @id @default(uuid())
+  name         String?
+  description  String?
+  kitchen      String?
+  cookingtime  Int?
+  portions     Int?
+  ingredients  String[]
+  instructions String[]
+  embedding    Unsupported("vector")?
 }
