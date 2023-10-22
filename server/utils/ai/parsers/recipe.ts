@@ -1,55 +1,81 @@
-import { StructuredOutputParser } from 'langchain/output_parsers';
+import { PromptTemplate } from 'langchain/prompts';
+import { OpenAI } from 'langchain/llms/openai';
+import {
+  OutputFixingParser,
+  StructuredOutputParser,
+} from 'langchain/output_parsers';
 import { z } from 'zod';
-import { Kitchen, Unit } from '@prisma/client';
 
 // https://www.santamariaworld.com/nl/alle-leuke-en-verrassende-recepten/spicy-kip-fajita-wrap/
 
-export const recipeParser = StructuredOutputParser.fromZodSchema(
+const recipeParser = StructuredOutputParser.fromZodSchema(
   z.object({
     name: z.string().describe('Name of the recipe.'),
     description: z
       .string()
       .describe('Short description of the recipe in 2-3 sentences.'),
-    youtubeUrl: z
-      .string()
-      //   .nullable()
-      .describe(
-        'YouTube URL for the recipe. Must be returned as a valid URL.'
-      ),
     kitchen: z
-      .nativeEnum(Kitchen)
-      .describe('Kitchen type for the recipe.'),
-    isVegetarian: z
-      .boolean()
-      .describe('Whether the recipe is vegetarian or not.'),
+      .string()
+      .describe(
+        'Kitchen type for the recipe, e.g. Italian, Mexican, etc.'
+      ),
+    cookingtime: z
+      .number()
+      .describe('Time in minutes required to cook the recipe.'),
     portions: z
       .number()
       .describe('Number of portions the recipe provides.'),
-    cookingTime: z
-      .number()
-      .describe('Time in minutes required to cook the recipe.'),
-    ingredients: z.array(
-      z.object({
-        name: z.string().describe('Name of the ingredient.'),
-        amount: z
-          .number()
-          .nullable()
-          .describe('Amount of the ingredient.'),
-        unit: z.nativeEnum(Unit).describe('Unit of the ingredient.'),
-      })
-    ),
+    ingredients: z.array(z.string()).describe('List of ingredients.'),
     instructions: z
-      .array(
-        z.object({
-          step: z
-            .string()
-            .describe(
-              'Step of the instruction. Each step must be a single sentence.'
-            ),
-        })
-      )
+      .array(z.string())
       .describe(
-        'Instructions for the recipe, consisting of multiple steps.'
+        'Instructions for the recipe, consisting of a single step in a single sentence.'
       ),
   })
 );
+
+export const generateStructuredOutputFromDocument = async (
+  document: string
+) => {
+  const formatInstructions = recipeParser.getFormatInstructions();
+
+  const prompt = new PromptTemplate({
+    template: `You are an expert in cooking and you are given the text of a recipe web page. Extract information as best as you can from this text.\n
+        {format_instructions}\n
+        All content should be returned in the original language.\n
+        Website page content: \n{pageContent}`,
+    inputVariables: ['pageContent'],
+    partialVariables: { format_instructions: formatInstructions },
+  });
+
+  const model = new OpenAI({
+    temperature: 0,
+    modelName: 'gpt-4',
+    verbose: true,
+  });
+
+  const input = await prompt.format({
+    pageContent: document,
+  });
+
+  const response = await model.call(input);
+
+  let recipe;
+
+  try {
+    recipe = await recipeParser.parse(response);
+    return recipe;
+  } catch (e) {
+    const fixParser = OutputFixingParser.fromLLM(
+      new OpenAI({
+        temperature: 0,
+        modelName: 'gpt-4',
+        verbose: true,
+      }),
+      recipeParser
+    );
+
+    recipe = await fixParser.parse(response);
+    return recipe;
+  }
+};
