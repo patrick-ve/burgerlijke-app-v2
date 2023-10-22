@@ -440,6 +440,17 @@ const recipes = [
 const seedData = async () => {
   try {
     for (const recipe of recipes) {
+      const existingRecipe = await prisma.recipes.findFirst({
+        where: {
+          name: recipe.name,
+        },
+      });
+
+      if (existingRecipe?.name === recipe.name) {
+        console.log(`Recipe ${recipe.name} already exists`);
+        return;
+      }
+
       const newRecipe = await prisma.recipes.create({
         data: recipe,
       });
@@ -452,10 +463,10 @@ const seedData = async () => {
       });
 
       const generatedEmbeddings = await embeddings.embedQuery(
-        `${newRecipe.name} ${newRecipe.description}`
+        `${newRecipe.name} ${newRecipe.ingredients.join(',')}`
       );
 
-      await prisma.$queryRaw`UPDATE "recipes" SET embedding = ${generatedEmbeddings} WHERE "id" = ${recipeId}`;
+      await prisma.$queryRaw`UPDATE "recipes" SET embedding = ${generatedEmbeddings}::vector WHERE id = ${recipeId}`;
     }
     await prisma.$disconnect();
   } catch (e) {
