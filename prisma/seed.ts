@@ -1,4 +1,8 @@
-import { PrismaClient, recipes } from '@prisma/client';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { PrismaClient } from '@prisma/client';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 
 const prisma = new PrismaClient();
 
@@ -436,9 +440,22 @@ const recipes = [
 const seedData = async () => {
   try {
     for (const recipe of recipes) {
-      await prisma.recipes.create({
+      const newRecipe = await prisma.recipes.create({
         data: recipe,
       });
+
+      const recipeId = newRecipe.id;
+
+      const embeddings = new OpenAIEmbeddings({
+        modelName: 'text-embedding-ada-002',
+        openAIApiKey: process.env.OPENAI_API_KEY,
+      });
+
+      const generatedEmbeddings = await embeddings.embedQuery(
+        `${newRecipe.name} ${newRecipe.description}`
+      );
+
+      await prisma.$queryRaw`UPDATE "recipes" SET embedding = ${generatedEmbeddings} WHERE "id" = ${recipeId}`;
     }
     await prisma.$disconnect();
   } catch (e) {
