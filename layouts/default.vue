@@ -9,7 +9,10 @@
         {{ documentTitle }}
       </h1>
 
-      <UButton label="Add new recipe" />
+      <UButton
+        :label="currentRouteButton?.label"
+        @click="currentRouteButton?.action"
+      />
     </header>
 
     <div class="py-16">
@@ -21,12 +24,29 @@
 </template>
 
 <script setup lang="ts">
-// Get Document title
-
 const documentTitle = computed(() => {
   if (process.client) {
     return document.title;
   }
+});
+
+const headerButtons = [
+  {
+    route: 'my-recipes',
+    label: 'Add new recipe',
+    action: () => {
+      console.log('add new recipe');
+    },
+  },
+];
+
+const currentRouteButton = computed(() => {
+  const currentRoute = useRoute();
+  const currentRouteName = currentRoute.name;
+
+  return headerButtons.find(
+    (button) => button.route === currentRouteName
+  );
 });
 </script>
 

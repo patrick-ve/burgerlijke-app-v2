@@ -12,7 +12,9 @@
           />
         </div>
         <div class="p-2 pt-0">
-          <p class="mt-4 text-sm font-semibold text-gray-600">
+          <p
+            class="mt-4 text-sm font-semibold text-gray-600 text-ellipsis"
+          >
             {{ recipe.name }}
           </p>
           <p class="text-sm text-gray-600 flex items-center">
