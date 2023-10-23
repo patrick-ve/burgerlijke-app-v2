@@ -2,7 +2,7 @@
   <li class="pl-1 snap-start shrink-0 h-52 w-52">
     <article class="mr-2">
       <div
-        class="rounded-[--card-radius] bg-white ring-2 ring-gray-600/10 [--card-padding:theme(spacing.1)] [--card-radius:theme(borderRadius.2xl)]"
+        class="rounded-[--card-radius] bg-white ring-1 ring-gray-600/20 [--card-padding:theme(spacing.1)] [--card-radius:theme(borderRadius.2xl)]"
       >
         <div class="p-[--card-padding] pb-0">
           <img
