@@ -14,10 +14,6 @@ if (!url) throw new Error(`Expected env var SUPABASE_URL`);
 
 export const run = async () => {
   const client = createClient(url, supabaseKey);
-  console.log(url, supabaseKey);
-
-  const recipes = await client.from('recipes').select('*');
-  console.log(recipes);
 
   const vectorStore = await SupabaseVectorStore.fromExistingIndex(
     new OpenAIEmbeddings(),
@@ -37,27 +33,27 @@ export const run = async () => {
 
   // Create Embedding
 
-  // const embeddings = new OpenAIEmbeddings();
+  const embeddings = new OpenAIEmbeddings();
 
-  // const generatedEmbedding = await embeddings.embedQuery(
-  //   'Vegetarian'
-  // );
+  const generatedEmbedding = await embeddings.embedQuery(
+    'Vegetarian'
+  );
   // console.log(generatedEmbedding);
 
   // // Search Supabase
-  // const { data, error } = await client.rpc('match_recipes', {
-  //   query_embedding: generatedEmbedding,
-  //   // similarity_threshold: 0.75,
-  //   // match_count: 3,
-  // });
+  const { data, error } = await client.rpc('match_recipes', {
+    query_embedding: generatedEmbedding,
+    similarity_threshold: 0.75,
+    match_count: 3,
+  });
 
-  // if (data) {
-  //   console.log(data);
-  // }
+  if (data) {
+    console.log(data);
+  }
 
-  // if (error) {
-  //   console.log(error);
-  // }
+  if (error) {
+    console.log(error);
+  }
 };
 
 run();
