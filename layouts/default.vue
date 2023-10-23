@@ -1,11 +1,34 @@
 <template>
-  <div class="h-screen w-screen text-gray-600 dark:text-gray-300">
-    <!-- <header class="bg-red-500 h-16 w-screen"></header> -->
-    <slot />
+  <div
+    class="h-full w-full text-gray-600 dark:text-gray-300 relative"
+  >
+    <header
+      class="border-b-[1px] h-16 w-screen p-4 fixed z-50 bg-white flex items-center justify-between"
+    >
+      <h1 class="text-xl font-semibold">
+        {{ documentTitle }}
+      </h1>
+
+      <UButton label="Add new recipe" />
+    </header>
+
+    <div class="py-16">
+      <slot />
+    </div>
 
     <navigation />
   </div>
 </template>
+
+<script setup lang="ts">
+// Get Document title
+
+const documentTitle = computed(() => {
+  if (process.client) {
+    return document.title;
+  }
+});
+</script>
 
 <style>
 * {

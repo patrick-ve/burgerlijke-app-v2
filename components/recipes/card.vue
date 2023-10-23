@@ -1,8 +1,8 @@
 <template>
   <li class="pl-1 snap-start shrink-0 h-52 w-52">
-    <article class="mr-4">
+    <article class="mr-2">
       <div
-        class="rounded-[--card-radius] bg-white ring-2 ring-black/10 [--card-padding:theme(spacing.1)] [--card-radius:theme(borderRadius.2xl)]"
+        class="rounded-[--card-radius] bg-white ring-2 ring-gray-600/10 [--card-padding:theme(spacing.1)] [--card-radius:theme(borderRadius.2xl)]"
       >
         <div class="p-[--card-padding] pb-0">
           <img
@@ -11,10 +11,16 @@
             alt=""
           />
         </div>
-        <div class="-mt-12 p-6 pt-0">
-          <p class="mt-4 font-semibold">{{ recipe.name }}</p>
-          <p class="text-sm text-gray-600">
-            {{ recipe.cookingtime }}
+        <div class="p-2 pt-0">
+          <p class="mt-4 text-sm font-semibold text-gray-600">
+            {{ recipe.name }}
+          </p>
+          <p class="text-sm text-gray-600 flex items-center">
+            <UIcon
+              name="i-heroicons-clock"
+              class="inline-block w-4 h-4 mr-1"
+            />
+            {{ recipe.cookingtime }} minutes
           </p>
           <div class="mt-2 text-sm"></div>
         </div>

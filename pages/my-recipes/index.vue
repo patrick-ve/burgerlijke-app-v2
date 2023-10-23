@@ -1,7 +1,7 @@
 <template>
   <section class="pt-4">
     <UContainer>
-      <h1 class="mb-4 text-xl font-semibold">My recipes</h1>
+      <!-- <h1 class="mb-4 text-xl font-semibold">My recipes</h1> -->
 
       <div v-if="pending">Loading...</div>
 
@@ -14,7 +14,7 @@
         >
           <h2 class="mb-2 text-xl font-semibold">{{ kitchen }}</h2>
           <ul
-            class="mb-4 flex snap-x snap-mandatory w-full h-52 overflow-x-scroll py-1 scrollbar-hide"
+            class="mb-4 flex snap-x snap-mandatory w-full h-54 overflow-x-scroll py-1 scrollbar-hide"
           >
             <recipes-card
               v-for="recipe in recipes"
@@ -105,4 +105,8 @@ const recipesGroupedByKitchen = recipes.value!.reduce(
 );
 
 console.dir(recipesGroupedByKitchen);
+
+useHead({
+  title: 'My recipes',
+});
 </script>
