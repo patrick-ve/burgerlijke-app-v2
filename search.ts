@@ -43,7 +43,7 @@ export const run = async () => {
   // // Search Supabase
   const { data, error } = await client.rpc('match_recipes', {
     query_embedding: generatedEmbedding,
-    similarity_threshold: 0.75,
+    similarity_threshold: 0.8,
     match_count: 3,
   });
 
