@@ -29,7 +29,7 @@ const navigationLinks = [
   },
   {
     name: 'Recepten',
-    path: '/my-recipes',
+    path: '/recipes',
     icon: 'i-heroicons-book-open',
   },
   {

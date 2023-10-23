@@ -6,9 +6,8 @@
       class="border-b-[1px] h-16 w-screen p-4 fixed z-50 bg-white flex items-center justify-between"
     >
       <h1 class="text-xl font-semibold">
-        {{ documentTitle }}
+        {{ currentRouteButton?.title }}
       </h1>
-
       <UButton
         :label="currentRouteButton?.label"
         @click="currentRouteButton?.action"
@@ -24,19 +23,17 @@
 </template>
 
 <script setup lang="ts">
-const documentTitle = computed(() => {
-  if (process.client) {
-    return document.title;
-  }
-});
+import { useAppStateStore } from '@/stores/app';
+
+const appStateStore = useAppStateStore();
+const { toggleNewRecipeModal } = appStateStore;
 
 const headerButtons = [
   {
-    route: 'my-recipes',
+    title: 'Recipes',
+    route: 'recipes',
     label: 'Add new recipe',
-    action: () => {
-      console.log('add new recipe');
-    },
+    action: toggleNewRecipeModal,
   },
 ];
 
