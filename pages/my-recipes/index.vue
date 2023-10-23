@@ -8,19 +8,21 @@
       <div v-if="error">{{ error }}</div>
 
       <div v-if="recipes">
-        <div
+        <section
           v-for="(recipes, kitchen) in recipesGroupedByKitchen"
           :key="kitchen"
         >
           <h2 class="mb-2 text-xl font-semibold">{{ kitchen }}</h2>
-          <ul class="mb-4">
+          <ul
+            class="mb-4 flex snap-x snap-mandatory w-full h-52 overflow-x-scroll py-1 scrollbar-hide"
+          >
             <recipes-card
               v-for="recipe in recipes"
               :key="recipe.id"
               :recipe="recipe"
             />
           </ul>
-        </div>
+        </section>
       </div>
 
       <UModal
