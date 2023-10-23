@@ -4,6 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 export default defineEventHandler(async (event) => {
   const { query } = await readBody(event);
 
+  console.log(query);
+
   const { supabaseUrl, supabaseKey, openAiKey } = useRuntimeConfig();
 
   const client = createClient(supabaseUrl, supabaseKey);
@@ -15,21 +17,19 @@ export default defineEventHandler(async (event) => {
 
   const generatedEmbeddings = await embeddings.embedQuery(query);
 
-  let { data, error } = await client.rpc('search_recipes', {
+  let { data: recipes, error } = await client.rpc('search_recipes', {
     match_count: 3,
     query_embedding: generatedEmbeddings,
     similarity_threshold: 0.805,
   });
 
-  if (data) {
-    console.log(data);
+  if (recipes) {
+    console.log(recipes);
   }
 
   if (error) {
     console.log(error);
   }
 
-  return {
-    recipes: data,
-  };
+  return recipes;
 });
