@@ -76,28 +76,6 @@ const recipes = [
     ],
   },
   {
-    name: 'Beef Stir-Fry',
-    description: 'Quick and flavorful beef stir-fry with vegetables.',
-    kitchen: 'Asian',
-    portions: 3,
-    cookingtime: 25,
-    ingredients: [
-      '300 grams of thinly sliced beef',
-      '1 bell pepper',
-      '1 broccoli head',
-      '2 cloves of garlic',
-      '2 tablespoons of soy sauce',
-      '1 tablespoon of oyster sauce',
-    ],
-    instructions: [
-      'Slice the bell pepper and broccoli into bite-sized pieces.',
-      'In a hot wok or pan, stir-fry the beef until browned. Remove from the pan.',
-      'In the same pan, sauté minced garlic, then add vegetables and stir-fry until tender-crisp.',
-      'Return the beef to the pan, add soy sauce and oyster sauce. Stir-fry for a few more minutes.',
-      'Serve hot with rice.',
-    ],
-  },
-  {
     name: 'Caesar Salad',
     description:
       'Classic salad with crisp romaine lettuce, croutons, and Caesar dressing.',
