@@ -413,6 +413,76 @@ const recipes = [
       'Allow the baklava to cool and absorb the syrup before serving.',
     ],
   },
+  {
+    name: 'Grilled Salmon with Lemon-Dill Sauce',
+    description:
+      'A healthy and flavorful dish featuring grilled salmon served with a zesty lemon-dill sauce.',
+    kitchen: 'International',
+    portions: 4,
+    cookingtime: 20,
+    ingredients: [
+      '4 salmon fillets',
+      '2 lemons',
+      '2 tablespoons of fresh dill, chopped',
+      '2 cloves of garlic, minced',
+      '3 tablespoons of olive oil',
+      'Salt and black pepper to taste',
+    ],
+    instructions: [
+      'Preheat the grill to medium-high heat.',
+      'Season the salmon fillets with salt, black pepper, and olive oil.',
+      'Grill the salmon for 4-5 minutes per side or until cooked through.',
+      'In a small bowl, combine the juice of 1 lemon, minced garlic, and chopped dill to make the sauce.',
+      'Serve the grilled salmon with the lemon-dill sauce and garnish with lemon slices.',
+    ],
+  },
+  {
+    name: 'Thai Red Curry Fish',
+    description:
+      'A delicious Thai-inspired dish with white fish, cooked in a fragrant red curry sauce with coconut milk.',
+    kitchen: 'Thai',
+    portions: 4,
+    cookingtime: 30,
+    ingredients: [
+      '4 white fish fillets (e.g., tilapia or cod)',
+      '1 can (14 oz) of coconut milk',
+      '2 tablespoons of red curry paste',
+      '1 red bell pepper, sliced',
+      '1 onion, chopped',
+      '1 tablespoon of fish sauce',
+      '1 tablespoon of brown sugar',
+      'Fresh basil leaves for garnish',
+    ],
+    instructions: [
+      'In a large skillet, heat some oil and sauté the red curry paste, onion, and bell pepper until fragrant.',
+      'Add the coconut milk, fish sauce, and brown sugar. Simmer for a few minutes.',
+      'Add the fish fillets and simmer until they are cooked through, about 10-12 minutes.',
+      'Serve the Thai red curry fish over rice and garnish with fresh basil leaves.',
+    ],
+  },
+  {
+    name: 'Baked Lemon Garlic Butter Shrimp',
+    description:
+      'A quick and easy dish featuring shrimp baked in a luscious lemon garlic butter sauce.',
+    kitchen: 'International',
+    portions: 4,
+    cookingtime: 15,
+    ingredients: [
+      '1 pound of large shrimp, peeled and deveined',
+      '4 tablespoons of unsalted butter, melted',
+      '4 cloves of garlic, minced',
+      'Juice and zest of 1 lemon',
+      '2 tablespoons of fresh parsley, chopped',
+      'Salt and black pepper to taste',
+    ],
+    instructions: [
+      'Preheat the oven to 375°F (190°C).',
+      'In a baking dish, combine the melted butter, minced garlic, lemon juice, and lemon zest.',
+      'Add the shrimp and toss to coat. Season with salt and black pepper.',
+      'Bake for 10-12 minutes or until the shrimp are pink and opaque.',
+      'Sprinkle with fresh parsley and serve with the garlic butter sauce.',
+    ],
+  },
 ];
 
 const seedData = async () => {

@@ -9,6 +9,36 @@ datasource db {
   extensions = [uuid_ossp(map: "uuid-ossp", schema: "extensions"), vector]
 }
 
+enum Kitchen {
+  ITALIAN
+  MEXICAN
+  SPANISH
+  GREEK
+  JAPANESE
+  CHINESE
+  INDIAN
+  FRENCH
+  DUTCH
+  AMERICAN
+  VEGAN
+  VEGETARIAN
+  OTHER
+}
+
+enum Unit {
+  GRAM
+  KILOGRAM
+  LITER
+  MILLILITER
+  PIECE
+  TEASPOON
+  TABLESPOON
+  CUP
+  PINCH
+  SOME
+  OTHER
+}
+
 model recipes {
   id           String                 @id @default(uuid()) @db.Uuid
   name         String?
