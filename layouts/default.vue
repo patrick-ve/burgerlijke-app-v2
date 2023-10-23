@@ -32,7 +32,7 @@ const headerButtons = [
   {
     title: 'Recipes',
     route: 'recipes',
-    label: 'Add new recipe',
+    label: 'Create new recipe',
     action: toggleNewRecipeModal,
   },
 ];
