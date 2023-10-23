@@ -3,17 +3,25 @@
     <UContainer>
       <h1 class="mb-4 text-xl font-semibold">My recipes</h1>
 
-      <UIcon name="i-heroicons-arrow-down-right-20-solid" />
+      <div v-if="pending">Loading...</div>
 
-      <!-- <nuxt-link
-        v-for="recipe in store.recipes"
-        :key="recipe.id"
-        :to="`/my-recipes/${recipe.id}`"
-      >
-        <article>
-          {{ recipe.name }} - {{ recipe.description }}
+      <div v-if="error">{{ error }}</div>
+
+      <div v-if="recipes">
+        <article
+          v-for="(recipes, kitchen) in recipesGroupedByKitchen"
+          :key="kitchen"
+        >
+          <h2 class="mb-2 text-xl font-semibold">{{ kitchen }}</h2>
+          <ul>
+            <li v-for="recipe in recipes" :key="recipe.id">
+              <h3>{{ recipe.name }}</h3>
+              <p>Portions: {{ recipe.portions }}</p>
+              <p>Cooking Time: {{ recipe.cookingtime }} minutes</p>
+            </li>
+          </ul>
         </article>
-      </nuxt-link> -->
+      </div>
 
       <UModal
         v-model="isModalOpen"
@@ -75,4 +83,24 @@ const modalButtons = [
     },
   },
 ];
+
+const {
+  data: recipes,
+  error,
+  pending,
+} = await useLazyFetch('/api/recipes', {
+  method: 'GET',
+});
+
+const recipesGroupedByKitchen = recipes.value!.reduce(
+  (group: Record<string | number, (typeof product)[]>, product) => {
+    const kitchen = product.kitchen as string;
+    group[kitchen] = group[kitchen] ?? [];
+    group[kitchen].push(product);
+    return group;
+  },
+  {}
+);
+
+console.dir(recipesGroupedByKitchen);
 </script>
