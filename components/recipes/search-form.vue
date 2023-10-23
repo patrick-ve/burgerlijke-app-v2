@@ -4,19 +4,19 @@
       <UInput
         placeholder="Search for a recipe"
         icon="i-heroicons-magnifying-glass"
-        v-model="query"
+        v-model="searchStore.query"
         @keyup.enter="handleSubmit"
       />
     </UFormGroup>
   </form>
 
-  <section v-if="recipes.length > 0 && query.length !== 0">
+  <section v-if="searchStore.searchResults.length > 0">
     <h2 class="mb-2 text-xl font-semibold">Results</h2>
     <ul
       class="mb-4 flex snap-x snap-mandatory w-full h-54 overflow-x-scroll py-1 scrollbar-hide"
     >
       <recipes-card
-        v-for="recipe in recipes"
+        v-for="recipe in searchStore.searchResults"
         :key="recipe.id"
         :recipe="recipe"
       />
@@ -25,23 +25,9 @@
 </template>
 
 <script setup lang="ts">
-const query = ref('');
-const recipes = ref([]);
+import { useSearchStore } from '@/stores/search';
 
-async function handleSubmit() {
-  const { data, pending, error } = await useFetch(
-    '/api/query/recipes',
-    {
-      method: 'POST',
-      body: {
-        query: query.value,
-      },
-    }
-  );
+const searchStore = useSearchStore();
 
-  console.log(data.value!);
-
-  // @ts-ignore
-  recipes.value = data.value;
-}
+const { handleSubmit } = searchStore;
 </script>

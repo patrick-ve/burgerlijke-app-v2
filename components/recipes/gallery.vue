@@ -3,7 +3,7 @@
 
   <div v-if="error">{{ error }}</div>
 
-  <div v-if="recipes">
+  <div v-if="recipes && searchStore.query === ''">
     <section
       v-for="(recipes, kitchen) in recipesGroupedByKitchen"
       :key="kitchen"
@@ -23,6 +23,10 @@
 </template>
 
 <script setup lang="ts">
+import { useSearchStore } from '@/stores/search';
+
+const searchStore = useSearchStore();
+
 const {
   data: recipes,
   error,

@@ -4,8 +4,6 @@ import { createClient } from '@supabase/supabase-js';
 export default defineEventHandler(async (event) => {
   const { query } = await readBody(event);
 
-  console.log(query);
-
   const { supabaseUrl, supabaseKey, openAiKey } = useRuntimeConfig();
 
   const client = createClient(supabaseUrl, supabaseKey);
