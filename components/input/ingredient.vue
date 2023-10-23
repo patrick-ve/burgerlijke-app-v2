@@ -17,8 +17,21 @@
 </template>
 
 <script setup lang="ts">
-import { Unit } from '@prisma/client';
 import { formatEnumValue, toEnumValue } from '@/utils/enums';
+
+enum Unit {
+  GRAM = 'grams',
+  KILOGRAM = 'kilogram',
+  LITER = 'liter',
+  MILLILITER = 'ml',
+  PIECE = 'pieces',
+  TEASPOON = 'tsp',
+  TABLESPOON = 'tbsp',
+  CUP = 'cup',
+  PINCH = 'pinch',
+  SOME = 'some',
+  OTHER = 'other',
+}
 
 const ingredient = reactive({
   name: '',
@@ -30,5 +43,5 @@ const units = Object.keys(Unit);
 
 const unitsFormatted = units.map(formatEnumValue);
 
-const ingredients = [];
+const ingredients = ref([]);
 </script>

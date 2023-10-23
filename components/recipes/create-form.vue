@@ -77,8 +77,23 @@
 </template>
 
 <script setup lang="ts">
-import { Kitchen } from '@prisma/client';
 import { formatEnumValue, toEnumValue } from '@/utils/enums';
+
+enum Kitchen {
+  ITALIAN = 'Italian',
+  MEXICAN = 'Mexican',
+  SPANISH = 'Spanish',
+  GREEK = 'Greek',
+  JAPANESE = 'Japanese',
+  CHINESE = 'Chinese',
+  INDIAN = 'Indian',
+  FRENCH = 'French',
+  DUTCH = 'Dutch',
+  AMERICAN = 'American',
+  VEGAN = 'Vegan',
+  VEGETARIAN = 'Vegetarian',
+  OTHER = 'Other',
+}
 
 const recipe = reactive({
   title: '',
