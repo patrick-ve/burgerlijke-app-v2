@@ -1,6 +1,8 @@
 <template>
   <section class="pt-4">
     <UContainer>
+      <recipes-search-form />
+
       <recipes-gallery />
 
       <UModal
