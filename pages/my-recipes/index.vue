@@ -8,19 +8,19 @@
       <div v-if="error">{{ error }}</div>
 
       <div v-if="recipes">
-        <article
+        <div
           v-for="(recipes, kitchen) in recipesGroupedByKitchen"
           :key="kitchen"
         >
           <h2 class="mb-2 text-xl font-semibold">{{ kitchen }}</h2>
-          <ul>
-            <li v-for="recipe in recipes" :key="recipe.id">
-              <h3>{{ recipe.name }}</h3>
-              <p>Portions: {{ recipe.portions }}</p>
-              <p>Cooking Time: {{ recipe.cookingtime }} minutes</p>
-            </li>
+          <ul class="mb-4">
+            <recipes-card
+              v-for="recipe in recipes"
+              :key="recipe.id"
+              :recipe="recipe"
+            />
           </ul>
-        </article>
+        </div>
       </div>
 
       <UModal
