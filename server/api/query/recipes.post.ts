@@ -16,9 +16,9 @@ export default defineEventHandler(async (event) => {
   const generatedEmbeddings = await embeddings.embedQuery(query);
 
   let { data: recipes, error } = await client.rpc('search_recipes', {
-    match_count: 3,
+    match_count: 5,
     query_embedding: generatedEmbeddings,
-    similarity_threshold: 0.805,
+    similarity_threshold: 0.81,
   });
 
   if (recipes) {

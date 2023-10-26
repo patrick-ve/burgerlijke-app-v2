@@ -11,6 +11,11 @@ import { z } from 'zod';
 const recipeParser = StructuredOutputParser.fromZodSchema(
   z.object({
     name: z.string().describe('Name of the recipe.'),
+    youTubeUrl: z
+      .string()
+      .describe(
+        'YouTube URL derived from the recipe. Must start with www.youtube.com/'
+      ),
     description: z
       .string()
       .describe('Short description of the recipe in 2-3 sentences.'),
@@ -38,9 +43,10 @@ export const generateStructuredOutputFromDocument = async (
   document: string
 ) => {
   const formatInstructions = recipeParser.getFormatInstructions();
+  console.log(formatInstructions);
 
   const prompt = new PromptTemplate({
-    template: `You are an expert in cooking and you are given the text of a recipe web page. Extract information as best as you can from this text.\n
+    template: `You are an expert in cooking and you are given the text of a recipe web page. Extract information as best as you can from this text. You must ensure that all schema properties are returned!\n
         {format_instructions}\n
         All content should be returned in the original language.\n
         Website page content: \n{pageContent}`,

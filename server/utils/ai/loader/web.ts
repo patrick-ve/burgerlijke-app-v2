@@ -4,6 +4,7 @@ import {
   Response,
   PlaywrightWebBaseLoader,
 } from 'langchain/document_loaders/web/playwright';
+import { Document } from 'langchain/dist/document';
 
 export const generateDocumentFromWebPage = async (
   url: string
@@ -25,6 +26,13 @@ export const generateDocumentFromWebPage = async (
       }
 
       const result = await page.evaluate(() => {
+        ['nav', 'header', 'footer'].forEach((tag) => {
+          [...document.body.getElementsByTagName(tag)].forEach(
+            (element) => {
+              element.remove();
+            }
+          );
+        });
         return document.body.innerText;
       });
 
@@ -32,7 +40,7 @@ export const generateDocumentFromWebPage = async (
     },
   });
 
-  const docs = await textLoader.load();
+  const docs: Document[] = await textLoader.load();
   const pageContent = docs[0].pageContent.replace(/\n/g, ' ');
 
   return pageContent;

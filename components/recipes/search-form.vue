@@ -11,7 +11,9 @@
   </form>
 
   <section v-if="searchStore.searchResults.length > 0">
-    <h2 class="mb-2 text-xl font-semibold">Results</h2>
+    <h2 class="mb-2 text-xl font-semibold">
+      Results for "{{ searchStore.query }}"
+    </h2>
     <ul
       class="mb-4 flex snap-x snap-mandatory w-full h-54 overflow-x-scroll py-1 scrollbar-hide"
     >

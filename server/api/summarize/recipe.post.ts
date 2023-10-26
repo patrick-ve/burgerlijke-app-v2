@@ -27,6 +27,8 @@ export default defineEventHandler(async (event) => {
     recipeDocument
   );
 
+  console.log(recipe);
+
   const {
     name,
     description,
@@ -36,17 +38,16 @@ export default defineEventHandler(async (event) => {
     ingredients,
     instructions,
   } = recipe;
-  const text = `
-    name: ${name}
-    description: ${description}
-    kitchen: ${kitchen}
-    portions: ${portions}
-    cookingTime: ${cookingtime}
-    instructions: ${instructions.map((instruction) =>
-      instruction.replace(/\.$/, '')
-    )}
-    ingredients: ${ingredients.map((ingredient) => ingredient)}
-    `;
+  const text = `Recipe name: ${name}`;
+  // description: ${description}
+  // kitchen: ${kitchen}
+  // portions: ${portions}
+  // cookingTime: ${cookingtime}
+  // instructions: ${instructions.map((instruction) =>
+  //   instruction.replace(/\.$/, '')
+  // )}
+  // ingredients: ${ingredients.map((ingredient) => ingredient)}
+  //`;
 
   const embeddings = new OpenAIEmbeddings({
     modelName: 'text-embedding-ada-002',
@@ -54,6 +55,7 @@ export default defineEventHandler(async (event) => {
   });
 
   const generatedEmbeddings = await embeddings.embedQuery(text);
+  console.log(generatedEmbeddings);
 
   const savedRecipe = await prisma.recipes.create({
     data: {
@@ -69,7 +71,7 @@ export default defineEventHandler(async (event) => {
 
   const recipeId = savedRecipe.id;
 
-  await prisma.$queryRaw`UPDATE "recipes" SET embedding = ${generatedEmbeddings} WHERE "id" = ${recipeId}`;
+  await prisma.$queryRaw`UPDATE "recipes" SET embedding = ${generatedEmbeddings} WHERE "id" = ${recipeId}::uuid`;
 
-  return recipe;
+  return savedRecipe;
 });
